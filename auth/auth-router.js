@@ -46,12 +46,12 @@ router.post("/register", (req, res) => {
 
 router.post("/login", (req, res) => {
     let { username, password } = req.body;
-
+    // console.log(password)
     Users.findBy({ username })
-        .first()
         .then(user => {
-            if (user && bc.compareSync(password, user[0].password)) {
-                req.session.ID = user[0].id;
+            console.log(user)
+            if (user && bc.compareSync(password, user.password)) {
+                req.session.ID = user.id;
                 req.session.loggedIn = true;
                 res.status(200).json({ message: `Welcome ${user.username}!` });
             } else {
@@ -59,6 +59,7 @@ router.post("/login", (req, res) => {
             }
         })
         .catch(error => {
+            console.log(error)
             res.status(500).json(error);
         });
 });
